@@ -19,11 +19,9 @@ public class paneldeVerda extends Component {
 
         JPanel panel1 = new JPanel();
         JButton btn = new JButton("Buscar...");
-        JButton btn2 = new JButton("Crear");
         JButton btn3 = new JButton("Mostrar");
         JButton btn4 = new JButton("Borrar");
         panel1.add(btn);
-        panel1.add(btn2);
         panel1.add(btn3);
         panel1.add(btn4);
 
@@ -68,10 +66,8 @@ public class paneldeVerda extends Component {
                 int result = fileChooser.showOpenDialog(marco);
 
                 if (result != JFileChooser.CANCEL_OPTION) {
-
                     File fileName = fileChooser.getSelectedFile();
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-
                     if ((fileName == null) || (fileName.getName().equals(""))) {
                         txt.setText("...");
                     } else {
@@ -81,6 +77,29 @@ public class paneldeVerda extends Component {
                         txt4.setText(String.valueOf((fileName.length()/1000)+"KB"));
                         txt5.setText(dateFormat.format(fileName.lastModified()));
                     }
+                }
+            }
+        });
+
+        btn4.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                int result = fileChooser.showOpenDialog(marco);
+                try
+                {
+                    if(result != JFileChooser.CANCEL_OPTION)
+                    {
+                        File fileName = fileChooser.getSelectedFile();
+                        if ((fileName == null) || (fileName.getName().equals(""))) {
+                            JOptionPane.showMessageDialog(null, "No has seleccionado archivo");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Has borrado el archivo");
+                            java.nio.file.Files.delete(fileName.toPath());
+                        }
+                    }
+                }catch(Exception ex){
+                    System.out.println(ex);
                 }
             }
         });
@@ -96,4 +115,5 @@ public class paneldeVerda extends Component {
         }
         return name.substring(lastIndexOf);
     }
+
 }

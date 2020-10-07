@@ -66,10 +66,7 @@ public class ficheros extends JFrame implements ActionListener {
         panel1.add(btn3);
         panel1.add(btn4);
         add(panel1);
-        add(panelaux);
-        panelaux.add(panel2);
-        panel1.setVisible(true);
-        panel2.setVisible(false);
+        add(panel2);
     }
     public static void main(String[] args) {
         ficheros test = new ficheros();
@@ -102,8 +99,6 @@ public class ficheros extends JFrame implements ActionListener {
                 txt5.setText(dateFormat.format(fileName.lastModified()));
             }
         }
-        panel1.setVisible(false);
-        panel2.setVisible(true);
     }
     public static String format(long time) {
         DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss"); return sdf.format(new Date(time));

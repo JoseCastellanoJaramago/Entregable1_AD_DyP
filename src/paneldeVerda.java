@@ -64,9 +64,9 @@ public class paneldeVerda extends Component {
                 FileNameExtensionFilter imgFilter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
                 fileChooser.setFileFilter(imgFilter);
                 int result = fileChooser.showOpenDialog(marco);
-
                 if (result != JFileChooser.CANCEL_OPTION) {
                     File fileName = fileChooser.getSelectedFile();
+                    seleccionarArchivo(fileName);
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
                     if ((fileName == null) || (fileName.getName().equals(""))) {
                         txt.setText("...");
@@ -114,6 +114,9 @@ public class paneldeVerda extends Component {
             return "";
         }
         return name.substring(lastIndexOf);
+    }
+    public static void seleccionarArchivo(File filename){
+
     }
 
 }

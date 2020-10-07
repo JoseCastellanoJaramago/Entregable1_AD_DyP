@@ -77,7 +77,7 @@ public class paneldeVerda extends Component {
 
 
         marco.add(pestañas);
-   
+
         contenido_texto.setPreferredSize(new Dimension(300,200));
 
         panel3.add(nombre_archiv_crear);
@@ -131,23 +131,18 @@ public class paneldeVerda extends Component {
                     panel4.setVisible(true);
                     panel5.setVisible(true);
 
+                        btn5.addActionListener(new ActionListener(){
+                        public void actionPerformed(ActionEvent e) {
+                            String nombre = nombrearchivo.getText();
+                            String direccion = directorio.getAbsolutePath();
+                            String texto=contenido_texto.getText();
 
+                            creaTexto texto1 = new creaTexto();
+                            dir=(texto1.creandoTexto(nombre,direccion,texto));
 
-
-
-
-                    btn5.addActionListener(new ActionListener(){
-                    public void actionPerformed(ActionEvent e) {
-                        String nombre = nombrearchivo.getText();
-                        String direccion = directorio.getAbsolutePath();
-                        String texto=contenido_texto.getText();
-
-                        creaTexto texto1 = new creaTexto();
-                        dir=(texto1.creandoTexto(nombre,direccion,texto));
-
-                        panel3.setVisible(false);
-                        panel4.setVisible(false);
-                        panel5.setVisible(false);
+                            panel3.setVisible(false);
+                            panel4.setVisible(false);
+                            panel5.setVisible(false);
 
 
 

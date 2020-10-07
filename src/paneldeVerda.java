@@ -15,8 +15,8 @@ public class paneldeVerda extends Component {
         marco.setSize(600, 400);
         marco.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         marco.setLayout(new BorderLayout(10, 0));
-        JPanel panelPrincipal = new JPanel();
-        panelPrincipal.setLayout(new GridLayout(2,1));
+        JTabbedPane pestañas = new JTabbedPane();
+
         JPanel panel1 = new JPanel();
         JButton btn = new JButton("Buscar...");
         JButton btn2 = new JButton("Crear");
@@ -27,6 +27,9 @@ public class paneldeVerda extends Component {
         panel1.add(btn3);
         panel1.add(btn4);
 
+
+        JPanel panel2 = new JPanel();
+        panel2.setLayout(new FlowLayout(FlowLayout.LEFT));
         JTextField txt = new JTextField(20);
         JTextField txt2 = new JTextField(20);
         JTextField txt3 = new JTextField(20);
@@ -37,8 +40,6 @@ public class paneldeVerda extends Component {
         JLabel lab3 = new JLabel("Ruta:     ");
         JLabel lab4 = new JLabel("Tamaño: ");
         JLabel lab5 = new JLabel("Última modificación: ");
-        JPanel panel2 = new JPanel();
-        panel2.setLayout(new FlowLayout(FlowLayout.LEFT));
         panel2.add(lab);
         panel2.add(txt);
         panel2.add(lab2);
@@ -50,10 +51,13 @@ public class paneldeVerda extends Component {
         panel2.add(lab5);
         panel2.add(txt5);
 
-        panelPrincipal.add(panel1);
-        panelPrincipal.add(panel2);
-        panel2.setVisible(false);
-        marco.add(panelPrincipal);
+        pestañas.addTab("Panel 1",panel1);
+        pestañas.addTab("Panel 2",panel2);
+
+        marco.add(pestañas);
+        pestañas.add(panel1);
+        pestañas.add(panel2);
+
         marco.setVisible(true);
         btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -61,8 +65,6 @@ public class paneldeVerda extends Component {
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 FileNameExtensionFilter imgFilter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
                 fileChooser.setFileFilter(imgFilter);
-                panel1.setVisible(false);
-                panel2.setVisible(true);
                 int result = fileChooser.showOpenDialog(marco);
 
                 if (result != JFileChooser.CANCEL_OPTION) {

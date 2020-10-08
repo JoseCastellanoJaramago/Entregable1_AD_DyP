@@ -2,10 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,7 +13,7 @@ public class paneldeVerda extends Component {
     public static void main(String[] args) {
         JFrame marco = new JFrame("Puntuable AD");
 
-        marco.setSize(600, 400);
+        marco.setSize(900, 700);
         marco.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         marco.setLayout(new BorderLayout(10, 0));
         JTabbedPane pestañas = new JTabbedPane();
@@ -31,6 +28,7 @@ public class paneldeVerda extends Component {
         JButton btn3 = new JButton("Mostrar");
         JButton btn4 = new JButton("Borrar");
         JButton btn5 = new JButton("Crea Texto");
+        JButton btn6 = new JButton("Contar palabras");
         panel1.add(btn);
         panel1.add(btn2);
 
@@ -42,7 +40,7 @@ public class paneldeVerda extends Component {
         panel2.setLayout(new GridLayout(3,1));
         panel21.setLayout(new FlowLayout(FlowLayout.LEFT));
         panel22.setLayout(new FlowLayout(FlowLayout.CENTER));
-        panel23.setLayout(new GridLayout(2,1));
+        panel23.setLayout(new FlowLayout(FlowLayout.CENTER));
         JTextField txt = new JTextField(20);
         JTextField txt2 = new JTextField(20);
         JTextField txt3 = new JTextField(20);
@@ -58,8 +56,7 @@ public class paneldeVerda extends Component {
         JLabel lab4 = new JLabel("Tamaño: ");
         JLabel lab5 = new JLabel("Última modificación: ");
         JLabel nombre_archiv_crear = new JLabel("Nombre del archivo");
-        JLabel nombre_texto_fichero = new JLabel("Contenido del fichero");
-        texto_fichero.setPreferredSize(new Dimension(300,200));
+        texto_fichero.setPreferredSize(new Dimension(300,400));
         panel21.add(lab);
         panel21.add(txt);
         panel21.add(lab2);
@@ -70,10 +67,10 @@ public class paneldeVerda extends Component {
         panel21.add(txt4);
         panel21.add(lab5);
         panel21.add(txt5);
-        panel22.add(btn3);
-        panel22.add(btn4);
-        panel23.add(nombre_texto_fichero);
-        panel23.add(texto_fichero);
+        panel23.add(btn3);
+        panel23.add(btn4);
+        panel23.add(btn6);
+        panel22.add(texto_fichero);
 
         panel2.add(panel21);
         panel2.add(panel22);
@@ -134,17 +131,18 @@ public class paneldeVerda extends Component {
                     btn3.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             File directorio = new File(fileName.getAbsolutePath());
-                            String codigo = "";
+                            String linea = "";
                             FileReader fr = null;
                             BufferedReader entrada = null;
                             try {
                                 fr = new FileReader(directorio);
                                 entrada = new BufferedReader(fr);
-
-                                while(entrada.ready()){
-                                    codigo += entrada.readLine();
+                                linea = entrada.readLine();
+                                while(linea !=null){
+                                    texto_fichero.append(linea);
+                                    texto_fichero.append(System.getProperty("line.separator"));
+                                    linea = entrada.readLine();
                                 }
-
                             }catch(IOException e1) {
                                 e1.printStackTrace();
                             }finally{
@@ -155,8 +153,31 @@ public class paneldeVerda extends Component {
                                 }catch (Exception e2){
                                     e2.printStackTrace();
                                 }
+                                try {
+                                    entrada.close();
+                                } catch (IOException ioException) {
+                                    ioException.printStackTrace();
+                                }
                             }
-                            texto_fichero.setText(codigo);
+                        }
+                    });
+                    btn6.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                        File directorio = new File(fileName.getAbsolutePath());
+                        FileReader fr = null;
+                        int contador = 0;
+                            try {
+                                fr = new FileReader(directorio);
+                                BufferedReader entrada = new BufferedReader(fr);
+                                String cadena = entrada.readLine();
+                                while (cadena != null) {
+                                    contador = contador + cadena.split("\\s+|\n|,").length;
+                                    cadena = entrada.readLine();
+                                }
+                        } catch (IOException fnfe) {
+                            System.out.println(fnfe.getMessage());
+                        }
+                            JOptionPane.showMessageDialog(null, "El número total de palabras son: " + contador);
                         }
                     });
                 }

@@ -1,15 +1,14 @@
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static java.nio.file.Files.delete;
 
 public class paneldeVerda extends Component {
     private static String dir;
@@ -105,12 +104,12 @@ public class paneldeVerda extends Component {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                fileChooser.setCurrentDirectory(new File("C:\\Users\\dam2\\Desktop\\Entregable1_AD_DyP\\src"));
                 int result = fileChooser.showOpenDialog(marco);
 
                 if (result == JFileChooser.APPROVE_OPTION) {
 
                     File fileName = fileChooser.getSelectedFile();
-
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
                     String direccion = fileName.getAbsolutePath();
                     txt.setText(fileName.getName());
@@ -168,7 +167,7 @@ public class paneldeVerda extends Component {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
+                fileChooser.setCurrentDirectory(new File("C:\\Users\\dam2\\Desktop\\Entregable1_AD_DyP\\src"));
                 int seleccion = fileChooser.showOpenDialog(crear);
 
                 if (seleccion == JFileChooser.APPROVE_OPTION)
@@ -200,9 +199,7 @@ public class paneldeVerda extends Component {
             }
         });
     }
-
-
-
+    
     public static String format(long time) {
         DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss"); return sdf.format(new Date(time));
     }

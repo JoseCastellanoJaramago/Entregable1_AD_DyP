@@ -36,10 +36,14 @@ public class paneldeVerda extends Component {
         panel1.add(btn2);
 
 
-
-
         JPanel panel2 = new JPanel();
-        panel2.setLayout(new FlowLayout(FlowLayout.LEFT));
+        JPanel panel21 = new JPanel();
+        JPanel panel22 = new JPanel();
+        JPanel panel23 = new JPanel();
+        panel2.setLayout(new GridLayout(3,1));
+        panel21.setLayout(new FlowLayout(FlowLayout.LEFT));
+        panel22.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panel23.setLayout(new GridLayout(2,1));
         JTextField txt = new JTextField(20);
         JTextField txt2 = new JTextField(20);
         JTextField txt3 = new JTextField(20);
@@ -56,23 +60,25 @@ public class paneldeVerda extends Component {
         JLabel lab5 = new JLabel("Última modificación: ");
         JLabel nombre_archiv_crear = new JLabel("Nombre del archivo");
         JLabel nombre_texto_fichero = new JLabel("Contenido del fichero");
+        texto_fichero.setPreferredSize(new Dimension(300,200));
+        panel21.add(lab);
+        panel21.add(txt);
+        panel21.add(lab2);
+        panel21.add(txt2);
+        panel21.add(lab3);
+        panel21.add(txt3);
+        panel21.add(lab4);
+        panel21.add(txt4);
+        panel21.add(lab5);
+        panel21.add(txt5);
+        panel22.add(btn3);
+        panel22.add(btn4);
+        panel23.add(nombre_texto_fichero);
+        panel23.add(texto_fichero);
 
-        panel2.add(lab);
-        panel2.add(txt);
-        panel2.add(lab2);
-        panel2.add(txt2);
-        panel2.add(lab3);
-        panel2.add(txt3);
-        panel2.add(lab4);
-        panel2.add(txt4);
-        panel2.add(lab5);
-        panel2.add(txt5);
-        panel2.add(btn3);
-        panel2.add(btn4);
-        panel2.add(nombre_texto_fichero);
-        panel2.add(texto_fichero);
-
-
+        panel2.add(panel21);
+        panel2.add(panel22);
+        panel2.add(panel23);
 
         pestañas.addTab("Panel 1",panel1);
         pestañas.addTab("Panel 2",panel2);

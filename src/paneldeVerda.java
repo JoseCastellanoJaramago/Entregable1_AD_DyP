@@ -29,6 +29,7 @@ public class paneldeVerda extends Component {
         JButton btn4 = new JButton("Borrar");
         JButton btn5 = new JButton("Crea Texto");
         JButton btn6 = new JButton("Contar palabras");
+        JButton btn7 = new JButton("Cifrar archivo");
         panel1.add(btn);
         panel1.add(btn2);
 
@@ -70,6 +71,7 @@ public class paneldeVerda extends Component {
         panel23.add(btn3);
         panel23.add(btn4);
         panel23.add(btn6);
+        panel23.add(btn7);
         panel22.add(texto_fichero);
 
         panel2.add(panel21);
@@ -81,8 +83,6 @@ public class paneldeVerda extends Component {
         panel1.add(panel3);
         panel1.add(panel4);
         panel4.add(panel5);
-
-
 
         marco.add(pestañas);
 
@@ -178,6 +178,32 @@ public class paneldeVerda extends Component {
                             System.out.println(fnfe.getMessage());
                         }
                             JOptionPane.showMessageDialog(null, "El número total de palabras son: " + contador);
+                        }
+                    });
+                    btn7.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            File directorio = new File(fileName.getAbsolutePath());
+                            FileReader fr;
+                            FileWriter wr;
+                            try {
+                                fr = new FileReader(directorio);
+                                wr = new FileWriter(directorio);
+                                BufferedReader entrada = new BufferedReader(fr);
+                                BufferedWriter salida = new BufferedWriter(wr);
+                                String cadena;
+                                cadena = entrada.readLine();
+                                while (cadena != null) {
+                                    salida.write(cadena + "\n");
+                                    cadena = entrada.readLine();
+                                }
+                                wr.flush();
+                                entrada.close();
+                                salida.close();
+                                fr.close();
+                                wr.close();
+                            }catch (IOException e2){
+
+                            }
                         }
                     });
                 }

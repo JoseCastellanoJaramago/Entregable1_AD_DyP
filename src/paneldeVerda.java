@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,19 +9,24 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static java.nio.file.Files.delete;
+
 public class paneldeVerda extends Component {
     private static String dir;
+    private static File nombAr;
 
     public static void main(String[] args) {
         JFrame marco = new JFrame("Puntuable AD");
 
-        marco.setSize(900, 700);
+
+        marco.setSize(600, 400);
         marco.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         marco.setLayout(new BorderLayout(10, 0));
         JTabbedPane pestañas = new JTabbedPane();
         JPanel panel3 = new JPanel();
         JPanel panel4 = new JPanel();
         JPanel panel5 = new JPanel();
+
 
         JPanel panel1 = new JPanel();
         JPanel crear = new JPanel();
@@ -28,20 +35,14 @@ public class paneldeVerda extends Component {
         JButton btn3 = new JButton("Mostrar");
         JButton btn4 = new JButton("Borrar");
         JButton btn5 = new JButton("Crea Texto");
-        JButton btn6 = new JButton("Contar palabras");
-        JButton btn7 = new JButton("Cifrar archivo");
+        JButton copia = new JButton("Copia");
+        JButton cuentaVoc = new JButton("Cuenta Vocales");
         panel1.add(btn);
         panel1.add(btn2);
 
 
         JPanel panel2 = new JPanel();
-        JPanel panel21 = new JPanel();
-        JPanel panel22 = new JPanel();
-        JPanel panel23 = new JPanel();
-        panel2.setLayout(new GridLayout(3,1));
-        panel21.setLayout(new FlowLayout(FlowLayout.LEFT));
-        panel22.setLayout(new FlowLayout(FlowLayout.CENTER));
-        panel23.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panel2.setLayout(new FlowLayout(FlowLayout.LEFT));
         JTextField txt = new JTextField(20);
         JTextField txt2 = new JTextField(20);
         JTextField txt3 = new JTextField(20);
@@ -57,32 +58,37 @@ public class paneldeVerda extends Component {
         JLabel lab4 = new JLabel("Tamaño: ");
         JLabel lab5 = new JLabel("Última modificación: ");
         JLabel nombre_archiv_crear = new JLabel("Nombre del archivo");
-        texto_fichero.setPreferredSize(new Dimension(300,400));
-        panel21.add(lab);
-        panel21.add(txt);
-        panel21.add(lab2);
-        panel21.add(txt2);
-        panel21.add(lab3);
-        panel21.add(txt3);
-        panel21.add(lab4);
-        panel21.add(txt4);
-        panel21.add(lab5);
-        panel21.add(txt5);
-        panel23.add(btn3);
-        panel23.add(btn4);
-        panel23.add(btn6);
-        panel23.add(btn7);
-        panel22.add(texto_fichero);
+        JLabel nombre_texto_fichero = new JLabel("Contenido del fichero");
+        JLabel norecu= new JLabel("Dale primero a buscar");
 
-        panel2.add(panel21);
-        panel2.add(panel22);
-        panel2.add(panel23);
+        panel1.add(copia);
+        panel1.add(norecu);
+        norecu.setVisible(false);
+
+
+        panel2.add(lab);
+        panel2.add(txt);
+        panel2.add(lab2);
+        panel2.add(txt2);
+        panel2.add(lab3);
+        panel2.add(txt3);
+        panel2.add(lab4);
+        panel2.add(txt4);
+        panel2.add(lab5);
+        panel2.add(txt5);
+        panel2.add(btn3);
+        panel2.add(btn4);
+        panel2.add(cuentaVoc);
+
+        panel2.add(nombre_texto_fichero);
+        panel2.add(texto_fichero);
 
         pestañas.addTab("Panel 1",panel1);
         pestañas.addTab("Panel 2",panel2);
         panel1.add(panel3);
         panel1.add(panel4);
         panel4.add(panel5);
+
 
         marco.add(pestañas);
 
@@ -101,12 +107,13 @@ public class paneldeVerda extends Component {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-                fileChooser.setCurrentDirectory(new File("C:\\Users\\dam2\\Desktop\\Entregable1_AD_DyP\\src"));
                 int result = fileChooser.showOpenDialog(marco);
 
                 if (result == JFileChooser.APPROVE_OPTION) {
 
                     File fileName = fileChooser.getSelectedFile();
+                    nombAr=fileName;
+
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
                     String direccion = fileName.getAbsolutePath();
                     txt.setText(fileName.getName());
@@ -131,18 +138,17 @@ public class paneldeVerda extends Component {
                     btn3.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             File directorio = new File(fileName.getAbsolutePath());
-                            String linea = "";
+                            String codigo = "";
                             FileReader fr = null;
                             BufferedReader entrada = null;
                             try {
                                 fr = new FileReader(directorio);
                                 entrada = new BufferedReader(fr);
-                                linea = entrada.readLine();
-                                while(linea !=null){
-                                    texto_fichero.append(linea);
-                                    texto_fichero.append(System.getProperty("line.separator"));
-                                    linea = entrada.readLine();
+
+                                while(entrada.ready()){
+                                    codigo += entrada.readLine();
                                 }
+
                             }catch(IOException e1) {
                                 e1.printStackTrace();
                             }finally{
@@ -153,57 +159,8 @@ public class paneldeVerda extends Component {
                                 }catch (Exception e2){
                                     e2.printStackTrace();
                                 }
-                                try {
-                                    entrada.close();
-                                } catch (IOException ioException) {
-                                    ioException.printStackTrace();
-                                }
                             }
-                        }
-                    });
-                    btn6.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                        File directorio = new File(fileName.getAbsolutePath());
-                        FileReader fr = null;
-                        int contador = 0;
-                            try {
-                                fr = new FileReader(directorio);
-                                BufferedReader entrada = new BufferedReader(fr);
-                                String cadena = entrada.readLine();
-                                while (cadena != null) {
-                                    contador = contador + cadena.split("\\s+|\n|,").length;
-                                    cadena = entrada.readLine();
-                                }
-                        } catch (IOException fnfe) {
-                            System.out.println(fnfe.getMessage());
-                        }
-                            JOptionPane.showMessageDialog(null, "El número total de palabras son: " + contador);
-                        }
-                    });
-                    btn7.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                            File directorio = new File(fileName.getAbsolutePath());
-                            FileReader fr;
-                            FileWriter wr;
-                            try {
-                                fr = new FileReader(directorio);
-                                wr = new FileWriter(directorio);
-                                BufferedReader entrada = new BufferedReader(fr);
-                                BufferedWriter salida = new BufferedWriter(wr);
-                                String cadena;
-                                cadena = entrada.readLine();
-                                while (cadena != null) {
-                                    salida.write(cadena + "\n");
-                                    cadena = entrada.readLine();
-                                }
-                                wr.flush();
-                                entrada.close();
-                                salida.close();
-                                fr.close();
-                                wr.close();
-                            }catch (IOException e2){
-
-                            }
+                            texto_fichero.setText(codigo);
                         }
                     });
                 }
@@ -214,7 +171,7 @@ public class paneldeVerda extends Component {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                fileChooser.setCurrentDirectory(new File("C:\\Users\\dam2\\Desktop\\Entregable1_AD_DyP\\src"));
+
                 int seleccion = fileChooser.showOpenDialog(crear);
 
                 if (seleccion == JFileChooser.APPROVE_OPTION)
@@ -245,8 +202,86 @@ public class paneldeVerda extends Component {
 
             }
         });
+
+/////copiar
+
+        copia.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                JFileChooser fileChooser = new JFileChooser();
+                creaCopia copy = new creaCopia();
+                if (nombAr != null) {
+
+                    if (nombAr.isFile()) {
+
+                        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                        int seleccion = fileChooser.showOpenDialog(marco);
+                        if (seleccion == JFileChooser.APPROVE_OPTION) {
+                            File directorio = fileChooser.getSelectedFile();
+                            String nombre = nombAr.getName();
+                            String direori = nombAr.getAbsolutePath();
+                            String direcop = directorio.getAbsolutePath();
+
+                            copy.copiando(direori, direcop, nombre);
+                        }
+
+                    }
+
+                } else if (dir != null) {
+                    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                    int selec = fileChooser.showOpenDialog(marco);
+                    if (selec == JFileChooser.APPROVE_OPTION) {
+                        File directorio = fileChooser.getSelectedFile();
+                        String direcop = directorio.getAbsolutePath();
+
+                        copy.copiando(dir, direcop, nombrearchivo.getText());
+
+
+                    }
+
+                }
+            }
+        });
+        cuentaVoc.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+                    FileReader lector = new FileReader(nombAr.getAbsolutePath());
+                    BufferedReader inBuffer = new BufferedReader(lector);
+                    String linea = inBuffer.readLine();
+                    int contador=0;
+
+                    while (linea != null) {
+                       // String lineaAux = linea;
+
+                        for (int i = 0; i < linea.length(); i++) {
+                            char letra = linea.charAt(i);
+                            if (esVocal(letra)) {
+                                contador=contador+1;
+                            }
+                        }
+                        linea = inBuffer.readLine();
+
+                    }
+                    contenido_texto.setText("las vocales en el texto son "+contador);
+
+                    inBuffer.close();
+                    lector.close();
+
+                } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+                 } catch (IOException e2) {
+                System.out.println("Error al cerrar el stream");
+                }catch(NullPointerException e3)
+                {
+                    System.out.print("no hay archivos");
+                }
+            }
+        });
     }
-    
+
+
+
     public static String format(long time) {
         DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss"); return sdf.format(new Date(time));
     }
@@ -257,5 +292,8 @@ public class paneldeVerda extends Component {
             return "";
         }
         return name.substring(lastIndexOf);
+    }
+    public static boolean esVocal(char c) {
+        return "aeiouAEIOUáéíóúÁÉÍÓÚüÜ".indexOf(c) > -1;
     }
 }

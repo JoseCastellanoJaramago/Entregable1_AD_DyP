@@ -1,9 +1,11 @@
 import java.io.BufferedWriter;
+
 import java.io.FileWriter;
 import java.io.IOException;
-import java.rmi.RMISecurityManager;
+
 
 public class creaTexto {
+
 
 public String creandoTexto(String nombre, String direccion,String texto) {
     String direc = "";
@@ -24,3 +26,6 @@ public String creandoTexto(String nombre, String direccion,String texto) {
 }
 
 }
+
+
+

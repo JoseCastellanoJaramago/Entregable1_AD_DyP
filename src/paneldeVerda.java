@@ -37,6 +37,7 @@ public class paneldeVerda extends Component {
         JButton btn5 = new JButton("Crea Texto");
         JButton btn6 = new JButton("Contar palabras");
         JButton btn7 = new JButton("Cifrar archivo");
+        JButton btnedita= new JButton("Editar");
         JButton copia = new JButton("Copia");
         JButton cuentaVoc = new JButton("Cuenta Vocales");
         panel1.add(btn);
@@ -85,6 +86,7 @@ public class paneldeVerda extends Component {
         panel21.add(lab5);
         panel21.add(txt5);
         panel23.add(btn3);
+        panel23.add(btnedita);
         panel23.add(btn4);
         panel23.add(btn6);
         panel23.add(btn7);
@@ -114,6 +116,7 @@ public class paneldeVerda extends Component {
         panel3.setVisible(false);
         panel4.setVisible(false);
         panel5.setVisible(false);
+        btnedita.setVisible(false);
         //buscar,borrar y mostrar
         btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -173,8 +176,31 @@ public class paneldeVerda extends Component {
                                 }
                             }
                             texto_fichero.setText(codigo);
+                            if (!codigo.equals("")){
+                                btnedita.setVisible(true);
+                            }
                         }
                     });
+                    btnedita.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                FileWriter escritor = new FileWriter(fileName.getAbsolutePath());
+                                BufferedWriter buff = new BufferedWriter(escritor);
+
+                                String escribo =texto_fichero.getText();
+                                buff.write(escribo);
+                                buff.close();
+                                escritor.close();
+
+                            } catch (IOException e4) {
+                                System.out.println("la has liado");
+                                e4.printStackTrace();
+
+                            }
+
+                        }
+                    });
+
                     btn6.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             File directorio = new File(fileName.getAbsolutePath());
@@ -267,38 +293,33 @@ public class paneldeVerda extends Component {
 
                 JFileChooser fileChooser = new JFileChooser();
                 creaCopia copy = new creaCopia();
+
                 if (nombAr != null) {
 
                     if (nombAr.isFile()) {
+                        String nombreAr =JOptionPane.showInputDialog("Introduce nombre del archivo");
 
                         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                         int seleccion = fileChooser.showOpenDialog(marco);
                         if (seleccion == JFileChooser.APPROVE_OPTION) {
-                            File directorio = fileChooser.getSelectedFile();
-                            String nombre = nombAr.getName();
+                            File directorio2 = fileChooser.getSelectedFile();
+                           String nombre = nombAr.getName();
                             String direori = nombAr.getAbsolutePath();
-                            String direcop = directorio.getAbsolutePath();
+                            String direcop = directorio2.getAbsolutePath();
 
-                            copy.copiando(direori, direcop, nombre);
+
+
+                            copy.copiando(direori, direcop, nombre,nombreAr);
                         }
 
                     }
 
-                } else if (dir != null) {
-                    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                    int selec = fileChooser.showOpenDialog(marco);
-                    if (selec == JFileChooser.APPROVE_OPTION) {
-                        File directorio = fileChooser.getSelectedFile();
-                        String direcop = directorio.getAbsolutePath();
 
-                        copy.copiando(dir, direcop, nombrearchivo.getText());
-
-
-                    }
 
                 }
             }
         });
+        ///Cuenta vocales
         cuentaVoc.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -309,7 +330,7 @@ public class paneldeVerda extends Component {
                     int contador=0;
 
                     while (linea != null) {
-                       // String lineaAux = linea;
+
 
                         for (int i = 0; i < linea.length(); i++) {
                             char letra = linea.charAt(i);

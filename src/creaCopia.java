@@ -2,7 +2,7 @@ import java.io.*;
 
 public class creaCopia {
 
-    public void copiando(String original, String direcCop, String nomb) {
+    public void copiando(String original, String direcCop, String nomb,String nombreAr) {
         try {
             String extension;
             int index = nomb.lastIndexOf('.');
@@ -10,7 +10,7 @@ public class creaCopia {
             nomb=nomb.substring(0,index);
 
             FileInputStream leer = new FileInputStream(original);
-            FileOutputStream copia = new FileOutputStream(direcCop+"\\"+nomb+"_copia"+extension);
+            FileOutputStream copia = new FileOutputStream(direcCop+"\\"+nombreAr+extension);
             BufferedInputStream bufferleer = new BufferedInputStream(leer);
             BufferedOutputStream buffercopia = new BufferedOutputStream(copia);
 

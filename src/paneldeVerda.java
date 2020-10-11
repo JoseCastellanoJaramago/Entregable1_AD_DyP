@@ -255,23 +255,44 @@ public class paneldeVerda extends Component {
                                     cadena = entrada.readLine();
                                 }
                                 contador2 = contador.split("\\s+|\n|,",contador.length());
-                                for (int j = 0; j < contador2[j].length(); j++){
+
+                                int indice = contador2.length;
+
+                                for (int j = 0; j < indice-1; j++){
                                     letraIn = contador2[j].charAt(0);
                                     letraFin = contador2[j].charAt(contador2[j].length()-1);
                                     StringBuilder stringBuilder = new StringBuilder(contador2[j]);
-                                    contadorinvertido = stringBuilder.reverse().toString();
-                                    contadorinvertido = (letraIn + contadorinvertido.substring(1,contadorinvertido.length()-1) + letraFin);
+
+
+                                    if(contador2[j].length()>1){
+
+                                        contadorinvertido = stringBuilder.reverse().toString();
+                                        contadorinvertido = (letraIn + contadorinvertido.substring(1,contadorinvertido.length()-1) + letraFin);
+                                    }else{
+                                        contadorinvertido = contador2[j];
+
+                                    }
+
+                                    if(textoinvertido.equals("")){
+                                        textoinvertido=contadorinvertido;
+
+                                    }
                                     textoinvertido = textoinvertido + " " + contadorinvertido;
+
+
                                 }
                                 texto_fichero.setText(textoinvertido);
                                 fr.close();
                                 entrada.close();
-                                String extension;
-                                String nomb;
-                                int index = nombAr.getName().lastIndexOf('.');
-                                extension=nombAr.getName().substring(index);
-                                nomb=nombAr.getName().substring(0,index);
-                                textocifr.creandoTexto(nomb + "_CIFRADO", nombAr.getAbsolutePath(), textoinvertido);
+
+                                String nomb="";
+                                String nomb2;
+
+                                int index2= nombAr.getAbsolutePath().lastIndexOf('.');
+                                int index3= nombAr.getAbsolutePath().lastIndexOf('\\');
+                                nomb2=nombAr.getAbsolutePath().substring(0,index3+1);
+                                nomb=nombAr.getAbsolutePath().substring(index3+1,index2);
+                                textocifr.creandoTexto(nomb + "_CIFRADO", nomb2, textoinvertido);
                             } catch (IOException fnfe) {
                                 System.out.println(fnfe.getMessage());
                             }

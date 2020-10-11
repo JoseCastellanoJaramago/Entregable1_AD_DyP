@@ -242,6 +242,7 @@ public class paneldeVerda extends Component {
                             FileReader fr = null;
                             String contador="";
                             String [] contador2;
+                            int size;
                             String contadorinvertido = null;
                             String textoinvertido = "";
                             char letraIn;
@@ -251,11 +252,12 @@ public class paneldeVerda extends Component {
                                 BufferedReader entrada = new BufferedReader(fr);
                                 String cadena = entrada.readLine();
                                 while (cadena != null) {
-                                    contador = contador + cadena + "\n";
+                                    contador = contador + cadena;
                                     cadena = entrada.readLine();
                                 }
                                 contador2 = contador.split("\\s+|\n|,",contador.length());
-                                for (int j = 0; j < contador2[j].length(); j++){
+                                size = contador2.length;
+                                for (int j = 0; j < size; j++){
                                     letraIn = contador2[j].charAt(0);
                                     letraFin = contador2[j].charAt(contador2[j].length()-1);
                                     StringBuilder stringBuilder = new StringBuilder(contador2[j]);

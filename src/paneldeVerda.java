@@ -120,30 +120,38 @@ public class paneldeVerda extends Component {
         //buscar,borrar y mostrar
         btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                texto_fichero.setText("");
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 int result = fileChooser.showOpenDialog(marco);
+                File fileName = fileChooser.getSelectedFile();
+                if (result == JFileChooser.APPROVE_OPTION ) {
 
-                if (result == JFileChooser.APPROVE_OPTION) {
-
-                    File fileName = fileChooser.getSelectedFile();
-                    nombAr=fileName;
+                    fileName = fileChooser.getSelectedFile();
+                    nombAr = fileName;
 
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
                     String direccion = fileName.getAbsolutePath();
                     txt.setText(fileName.getName());
                     txt2.setText(sacaExtension(fileName));
                     txt3.setText(fileName.getAbsolutePath());
-                    txt4.setText(String.valueOf((fileName.length()/1000)+"KB"));
+                    txt4.setText(String.valueOf((fileName.length() / 1000) + "KB"));
                     txt5.setText(dateFormat.format(fileName.lastModified()));
+                }
                     btn4.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
-                            File directorio = new File(fileName.getAbsolutePath());
+                            File directorio = new File(nombAr.getAbsolutePath());
                             try
                             {
                                 JOptionPane.showMessageDialog(null, "Has borrado el archivo");
                                 directorio.delete();
+                                txt.setText("");
+                                txt2.setText("");
+                                txt3.setText("");
+                                txt4.setText("");
+                                txt5.setText("");
+                                texto_fichero.setText("");
 
                             }catch(Exception ex){
                                 System.out.println(ex);
@@ -152,18 +160,20 @@ public class paneldeVerda extends Component {
                     });
                     btn3.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
-                            File directorio = new File(fileName.getAbsolutePath());
-                            String codigo = "";
+                            File directorio = new File(nombAr.getAbsolutePath());
+                            String linea = "";
+                            String txt = "";
                             FileReader fr = null;
                             BufferedReader entrada = null;
                             try {
                                 fr = new FileReader(directorio);
                                 entrada = new BufferedReader(fr);
-
-                                while(entrada.ready()){
-                                    codigo += entrada.readLine();
+                                linea = entrada.readLine();
+                                while(linea !=null){
+                                    txt = txt + linea + "\n";
+                                    linea = entrada.readLine();
                                 }
-
+                                texto_fichero.setText(txt);
                             }catch(IOException e1) {
                                 e1.printStackTrace();
                             }finally{
@@ -174,9 +184,11 @@ public class paneldeVerda extends Component {
                                 }catch (Exception e2){
                                     e2.printStackTrace();
                                 }
-                            }
-                            texto_fichero.setText(codigo);
-                            if (!codigo.equals("")){
+                                try {
+                                    entrada.close();
+                                } catch (IOException ioException) {
+                                    ioException.printStackTrace();
+                                }
                                 btnedita.setVisible(true);
                             }
                         }
@@ -184,7 +196,7 @@ public class paneldeVerda extends Component {
                     btnedita.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             try {
-                                FileWriter escritor = new FileWriter(fileName.getAbsolutePath());
+                                FileWriter escritor = new FileWriter(nombAr.getAbsolutePath());
                                 BufferedWriter buff = new BufferedWriter(escritor);
 
                                 String escribo =texto_fichero.getText();
@@ -203,7 +215,7 @@ public class paneldeVerda extends Component {
 
                     btn6.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
-                            File directorio = new File(fileName.getAbsolutePath());
+                            File directorio = new File(nombAr.getAbsolutePath());
                             FileReader fr = null;
                             int contador = 0;
                             try {
@@ -214,39 +226,57 @@ public class paneldeVerda extends Component {
                                     contador = contador + cadena.split("\\s+|\n|,").length;
                                     cadena = entrada.readLine();
                                 }
+                                fr.close();
+                                entrada.close();
                             } catch (IOException fnfe) {
                                 System.out.println(fnfe.getMessage());
                             }
+
                             JOptionPane.showMessageDialog(null, "El número total de palabras son: " + contador);
                         }
                     });
                     btn7.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
-                            File directorio = new File(fileName.getAbsolutePath());
-                            FileReader fr;
-                            FileWriter wr;
+                            creaTexto textocifr = new creaTexto();
+                            File directorio = new File(nombAr.getAbsolutePath());
+                            FileReader fr = null;
+                            String contador="";
+                            String [] contador2;
+                            String contadorinvertido = null;
+                            String textoinvertido = "";
+                            char letraIn;
+                            char letraFin;
                             try {
                                 fr = new FileReader(directorio);
-                                wr = new FileWriter(directorio);
                                 BufferedReader entrada = new BufferedReader(fr);
-                                BufferedWriter salida = new BufferedWriter(wr);
-                                String cadena;
-                                cadena = entrada.readLine();
+                                String cadena = entrada.readLine();
                                 while (cadena != null) {
-                                    salida.write(cadena + "\n");
+                                    contador = contador + cadena + "\n";
                                     cadena = entrada.readLine();
                                 }
-                                wr.flush();
-                                entrada.close();
-                                salida.close();
+                                contador2 = contador.split("\\s+|\n|,",contador.length());
+                                for (int j = 0; j < contador2[j].length(); j++){
+                                    letraIn = contador2[j].charAt(0);
+                                    letraFin = contador2[j].charAt(contador2[j].length()-1);
+                                    StringBuilder stringBuilder = new StringBuilder(contador2[j]);
+                                    contadorinvertido = stringBuilder.reverse().toString();
+                                    contadorinvertido = (letraIn + contadorinvertido.substring(1,contadorinvertido.length()-1) + letraFin);
+                                    textoinvertido = textoinvertido + " " + contadorinvertido;
+                                }
+                                texto_fichero.setText(textoinvertido);
                                 fr.close();
-                                wr.close();
-                            }catch (IOException e2){
-
+                                entrada.close();
+                                String extension;
+                                String nomb;
+                                int index = nombAr.getName().lastIndexOf('.');
+                                extension=nombAr.getName().substring(index);
+                                nomb=nombAr.getName().substring(0,index);
+                                textocifr.creandoTexto(nomb + "_CIFRADO", nombAr.getAbsolutePath(), textoinvertido);
+                            } catch (IOException fnfe) {
+                                System.out.println(fnfe.getMessage());
                             }
                         }
                     });
-                }
             }
         });
 /////crear archivo

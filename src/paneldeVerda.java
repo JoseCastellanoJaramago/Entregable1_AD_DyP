@@ -276,8 +276,10 @@ public class paneldeVerda extends Component {
                                     if(textoinvertido.equals("")){
                                         textoinvertido=contadorinvertido;
 
+                                    }else{
+                                        textoinvertido = textoinvertido + " " + contadorinvertido;
                                     }
-                                    textoinvertido = textoinvertido + " " + contadorinvertido;
+
 
 
                                 }

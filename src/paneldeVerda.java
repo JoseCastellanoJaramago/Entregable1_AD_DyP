@@ -134,8 +134,9 @@ public class paneldeVerda extends Component {
                     txt.setText(fileName.getName());
                     txt2.setText(sacaExtension(fileName));
                     txt3.setText(fileName.getAbsolutePath());
-                    txt4.setText(String.valueOf((fileName.length()/1000)+"KB"));
+                    txt4.setText(String.valueOf((fileName.length()/1024)+"KB"));
                     txt5.setText(dateFormat.format(fileName.lastModified()));
+
                     btn4.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
@@ -150,37 +151,44 @@ public class paneldeVerda extends Component {
                             }
                         }
                     });
-                    btn3.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                            File directorio = new File(fileName.getAbsolutePath());
-                            String codigo = "";
-                            FileReader fr = null;
-                            BufferedReader entrada = null;
-                            try {
-                                fr = new FileReader(directorio);
-                                entrada = new BufferedReader(fr);
+                    if(fileName.isFile()) {
+                        btn3.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                File directorio = new File(fileName.getAbsolutePath());
+                                String codigo ="";
+                                FileReader fr = null;
+                                BufferedReader entrada = null;
+                                try {
 
-                                while(entrada.ready()){
-                                    codigo += entrada.readLine();
-                                }
+                                    fr = new FileReader(directorio);
+                                    entrada = new BufferedReader(fr);
 
-                            }catch(IOException e1) {
-                                e1.printStackTrace();
-                            }finally{
-                                try{
-                                    if(null != fr){
-                                        fr.close();
+                                    while ((codigo=entrada.readLine())!=null) {
+                                        codigo += entrada.readLine();
                                     }
-                                }catch (Exception e2){
-                                    e2.printStackTrace();
+                                    texto_fichero.setText(codigo);
+
+
+                                } catch (IOException e1) {
+                                    e1.printStackTrace();
+                                } finally {
+                                    try {
+                                        if (null != fr) {
+                                            entrada.close();
+                                            fr.close();
+
+                                        }
+                                    } catch (Exception e2) {
+                                        e2.printStackTrace();
+                                    }
+                                }
+
+                                if (!codigo.equals("")) {
+                                    btnedita.setVisible(true);
                                 }
                             }
-                            texto_fichero.setText(codigo);
-                            if (!codigo.equals("")){
-                                btnedita.setVisible(true);
-                            }
-                        }
-                    });
+                        });
+                    }
                     btnedita.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             try {
